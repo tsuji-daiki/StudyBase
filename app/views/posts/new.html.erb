@@ -1,0 +1,7 @@
+<h1>新規投稿</h1>
+<%= form_with model: @post do |form| %>
+  <p><%= form.label :content %><%= form.text_field :content %></p>
+  <%# <p>質問<%= form.check_box('genre',{},true,false) %><%#</p>
+  <p>「質問」を選ぶと投稿に「返信する」が追加されます</p>  %>
+  <p><%= form.submit %></p>
+<% end %>

@@ -1,0 +1,32 @@
+<div class="post-wrapper">
+  <h1 class="post-title">今日の投稿</h1>
+  <% @post.each do |post|%>
+    <div class="content-wrapper">
+      <div class="profile-wrapper">
+        <% if post.profile.image.attached? %>
+          <%= image_tag post.profile.image.variant(resize:'80x40'), class:'profile-image' %>
+        <% end %>
+        <div class="profile-name">
+          <%= post.profile.name %>
+        </div>
+      </div>
+      <a href="/posts/<%=post.id%>" class="content-text"><%= post.content %></a>
+    </div>
+  <% end %>
+  <p class="content-new"><%= link_to '投稿する',"/posts/new", {class: "content-button"} %></p>
+  
+  <% if user_signed_in? %>
+    <div>ログイン中のユーザー：<%= link_to(@user.profile.name,"") %></div>
+    <% if @user.profile.image.attached? %>
+      <div class="image-wrapper"><%= image_tag @user.profile.image.variant(resize:'100x100').processed %></div>
+    <% end %>
+    <div>ログイン中のメールアドレス：<%= current_user.email %></div>
+    <p><%= link_to 'プロフィールを編集', controller: "profiles", action: "edit", id: @user.profile.id %></p>
+    <%= link_to 'ログアウト', destroy_user_session_path, method: :delete%>
+  <% else %>
+    <p>現在ログインしていません</p>
+    <%= link_to '新規登録', new_user_registration_path%>
+    <%= link_to 'ログイン', new_user_session_path %>>
+  <% end %>
+  
+</div>
