@@ -1,7 +1,14 @@
-import React,{Fragment, useState, useRef, useEffect, useCallback} from 'react'
+import React,{Fragment, useState,useEffect} from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import "./style.css"
 
+const zeropadding = (i) => {
+  if (String(i).length < 2) {
+    return "0" + i;
+  }
+  return i;
+}; //表示用に0を追加する関数
 
 const CountUpTimer = () => {
   const [time, setTime] = useState({
@@ -10,19 +17,10 @@ const CountUpTimer = () => {
     second: 0
   }); //設定時間
 
-  const [retime, setRetime] = useState({
-    hour: 0,
-    minute: 0,
-    second: 0
-  }) //残り時間
-
-
-  useEffect(() => {
-    console.log(retime.hour)
-    console.log(retime.minute)
-    console.log(retime.second)
-    console.log("retimeの値が変更されました")
-  },[retime])
+  const [changing, setChanging] = useState(false); //時間が設定されたか
+  const [left, setLeft] = useState(0); //残り時間
+  const [counting, setCounting] = useState(false); //カウントダウンの判断
+  const [switching,setSwitching] = useState(null); //clearTimeoutで処理を止める
 
   const changeTimerHour = (e) => {
     const value = e.target.value;
@@ -42,70 +40,46 @@ const CountUpTimer = () => {
     })
   }
 
-  const settingCount = () => {
-    setRetime({
-      ...retime,
-      hour:time.hour,
-      minute:time.minute,
-      second:time.second
-    })
-  }
+  useEffect(() => {
+    const newtimeHour = Math.floor(time.hour * (60 * 60))
+    const newtimeMinute = Math.floor(time.minute * 60)
+    const total = newtimeHour + newtimeMinute
+    setLeft(total)
+  },[changing])
 
-  const countDownStart = () => {
-    setInterval(() => {
-      if(retime.hour === 0 && retime.minute === 0 && retime.second === 0){
-        setRetime({
-          ...retime, 
-          hour:time.hour, 
-          minute:time.minute, 
-          second:time.second
-        })
-      } else if (retime.minute === 0 && retime.second === 0) {
-        setRetime( prevCount => {
-          const newCountDownHour = prevCount.hour - 1
-          return {
-            ...retime, 
-            hour: newCountDownHour, 
-            minute: 59, 
-            second: 59
-          }
-        })
-      } else if (retime.second === 0) {
-        setRetime( prevCount => {
-          const newCountDownMinute = prevCount.minute - 1
-          return {
-            ...retime, 
-            hour: retime.hour, 
-            minute: newCountDownMinute, 
-            second: 59
-          }
-        })
-      } else {
-        setRetime( prevCount => {
-          const newCountDownSecond = prevCount.second - 1
-          return {
-            ...retime, 
-            hour:retime.hour, 
-            minute:retime.minute, 
-            second:newCountDownSecond
-          }
-        })
-      }
-    },1000)
-  }
+  useEffect(() => {
+    if (!counting) {
+      return;
+    }
+    const id = setTimeout(()=> {
+      setLeft( left - 1 );
+    }, 1000)
+    setSwitching(id)
+  },[left,counting])
 
+  const hour = Math.floor(left / (60 * 60))
+  const minute = Math.floor((left - hour * (60 * 60)) / 60 )
+  const second = Math.floor(left - hour * (60 * 60) - minute * 60);
+
+  
   return(
     <Fragment>
-      <div>
-        <p>{retime.hour}</p>
-        <p>{retime.minute}</p>
-        <p>{retime.second}</p>
+      <div class="front">
+        <p>{zeropadding(hour)}:{zeropadding(minute)}:{zeropadding(second)}</p>
       </div>
-      <p>目標勉強時間を入力してください</p>
       <input type="text" value={time.hour} onChange={changeTimerHour}></input>
       <input type="text" value={time.minute} onChange={changeTimerMinute}></input>
-      <button onClick={settingCount}>時間を設定</button>
-      <button onClick={countDownStart}>勉強開始</button>
+      <button onClick={() => {
+        setChanging(!changing)
+      }}>時間を設定</button>
+      <button onClick={() => {
+        setCounting(!counting);
+
+        if (counting) {
+          clearTimeout(switching);
+          setSwitching(null);
+        }
+      }}>{counting ? "勉強中断" : "勉強開始"}</button>
   </Fragment>
   )
 }
