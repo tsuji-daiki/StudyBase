@@ -1,6 +1,7 @@
 import React,{Fragment, useState,useEffect} from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import axios from 'axios'
 import "./style.css"
 
 const zeropadding = (i) => {
@@ -14,7 +15,8 @@ const CountUpTimer = () => {
   const [time, setTime] = useState({
     hour: 0,
     minute: 0,
-    second: 0
+    second: 0,
+    total: 0
   }); //設定時間
 
   const [changing, setChanging] = useState(false); //時間が設定されたか
@@ -40,10 +42,19 @@ const CountUpTimer = () => {
     })
   }
 
+  const submitData = (t) => { // axiosでRailsにデータを送信
+    return axios.post("https://localhost3000/profiles",{
+      study_time: t 
+    }).then(res=>{
+      return res.data
+    }).catch((e) => {throw e;})
+  }
+
   useEffect(() => {
     const newtimeHour = Math.floor(time.hour * (60 * 60))
     const newtimeMinute = Math.floor(time.minute * 60)
     const total = newtimeHour + newtimeMinute
+    setTime({...time, total: total})
     setLeft(total)
   },[changing])
 
@@ -57,6 +68,7 @@ const CountUpTimer = () => {
     setSwitching(id)
   },[left,counting])
 
+  // leftに格納された秒数をそれぞれ時・分・秒に変換
   const hour = Math.floor(left / (60 * 60))
   const minute = Math.floor((left - hour * (60 * 60)) / 60 )
   const second = Math.floor(left - hour * (60 * 60) - minute * 60);
@@ -78,8 +90,12 @@ const CountUpTimer = () => {
         if (counting) {
           clearTimeout(switching);
           setSwitching(null);
+          const totalStudy = time.total - left
+          console.log(totalStudy);
+          submitData(totalStudy);
         }
       }}>{counting ? "勉強中断" : "勉強開始"}</button>
+      {/* <button onClick={}>勉強を終了する</button> */}
   </Fragment>
   )
 }

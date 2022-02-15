@@ -1,6 +1,7 @@
 class Profile < ApplicationRecord
   belongs_to :user
   has_many :posts
+  has_one :study
   has_one_attached :image
 
   validates :name, presence: true
