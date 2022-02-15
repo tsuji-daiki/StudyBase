@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :posts
-  resources :profiles
+  get 'profiles/:id', to: 'profiles#index'
+  get 'profiles/:id', to: 'profiles#edit'
+  get 'countdowns', to: 'countdowns#index'
 
   devise_for :users, controllers: {
     registrations: 'users/registrations',

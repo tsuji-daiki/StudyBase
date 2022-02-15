@@ -8,12 +8,14 @@
         <% end %>
         <div class="profile-name">
           <%= post.profile.name %>
+          <%= post.profile.user_id %>
         </div>
       </div>
       <a href="/posts/<%=post.id%>" class="content-text"><%= post.content %></a>
     </div>
   <% end %>
   <p class="content-new"><%= link_to '投稿する',"/posts/new", {class: "content-button"} %></p>
+  <p class="study"><%= link_to '勉強する',"/countdowns" %></p>
   
   <% if user_signed_in? %>
     <div>ログイン中のユーザー：<%= link_to(@user.profile.name,"") %></div>
@@ -22,6 +24,7 @@
     <% end %>
     <div>ログイン中のメールアドレス：<%= current_user.email %></div>
     <p><%= link_to 'プロフィールを編集', controller: "profiles", action: "edit", id: @user.profile.id %></p>
+    <p><%= link_to 'プロフィール画面へ', controller: "profiles", action: "index", id: @user.profile.id %></p>
     <%= link_to 'ログアウト', destroy_user_session_path, method: :delete%>
   <% else %>
     <p>現在ログインしていません</p>
