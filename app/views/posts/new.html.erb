@@ -1,7 +1,18 @@
-<h1>新規投稿</h1>
-<%= form_with model: @post do |form| %>
-  <p><%= form.label :content %><%= form.text_field :content %></p>
-  <%# <p>質問<%= form.check_box('genre',{},true,false) %><%#</p>
-  <p>「質問」を選ぶと投稿に「返信する」が追加されます</p>  %>
-  <p><%= form.submit %></p>
-<% end %>
+
+<div class="post-new-wrapper">
+  <h1 class="post-new-title">新規投稿</h1>
+  <div class="content-post-new-wrapper">
+    <%= form_with model: @post do |form| %>
+      <p><%= form.label :content %></p>
+      <p><%= form.text_area :content, size: "40x10", class: "post-new-area" %></p>
+      <%# <p>質問<%= form.check_box('genre',{},true,false) %><%#</p>
+      <p>「質問」を選ぶと投稿に「返信する」が追加されます</p>  %>
+      <p><%= form.submit "投稿する" %></p>
+    <% end %>
+  </div>
+</div>
+<div class="return-top">
+  <%= link_to 'トップへ戻る',"/posts" %>
+</div>
+
+

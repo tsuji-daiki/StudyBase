@@ -1,0 +1,84 @@
+
+.box-wrapper {
+  max-width: 1300px;
+  margin: 60px auto;
+}
+
+.box { 
+  width: 450px;
+  height: 400px;
+  border: 1px solid #000;
+  border-radius: 50px;
+  margin: 0 auto;
+  background-color: #fff;
+
+  .box-inner {
+    text-align: center;
+    h2 {
+      font-size: 3.0rem;
+      font-weight: normal;
+      margin: 30px 0;
+    }
+
+    .box-field {
+      position: relative;
+      i {
+          background-color: #d3d3d3;
+          font-size: 2.2rem;
+          color: white;
+          text-align: center;
+          line-height: 40px;
+          width: 40px;
+          height: 40px;
+          position: absolute;
+          top: 0;
+          left: 68px;
+      }
+    }
+
+    .forget-field {
+      margin-bottom: 20px;
+    }
+
+    .login-help {
+      display: flex;
+      justify-content: center;
+      text-align: left;
+      // text-align: center;
+      .sign_new {
+        color: #6495ed;
+      }
+      .forget-pass {
+        margin-left: 20px;
+        border-bottom: 1px solid rgba(0,0,0,0.6);
+        opacity: 0.6;
+      }
+    }
+
+    .login_re {
+      color: #6495ed;
+      border-bottom: 1px solid #6495ed;
+    }
+  }
+
+}
+
+input[type="email"], input[type="password"] {
+  width: 50%;
+  height: 40px;
+  margin-bottom: 20px;
+  border-width: 0;
+  background-color: #f5f5f5;
+  padding-left: 8px;
+  outline: none;
+}
+
+input[type="submit"] {
+  width: 45%;
+  height: 40px;
+  border-width: 0;
+  background-color: aquamarine;
+  border-radius: 20px;
+  margin: 10px 0;
+  cursor: pointer;
+}
