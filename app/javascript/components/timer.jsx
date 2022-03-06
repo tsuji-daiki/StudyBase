@@ -1,4 +1,5 @@
 import React,{Fragment, useState,useEffect} from 'react'
+import { useLocation } from 'react-router-dom'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import axios from 'axios'
@@ -11,7 +12,7 @@ const zeropadding = (i) => {
   return i;
 }; //表示用に0を追加する関数
 
-const CountUpTimer = () => {
+const CountUpTimer = (props) => {
   const [time, setTime] = useState({
     hour: 0,
     minute: 0,
@@ -23,6 +24,12 @@ const CountUpTimer = () => {
   const [left, setLeft] = useState(0); //残り時間
   const [counting, setCounting] = useState(false); //カウントダウンの判断
   const [switching,setSwitching] = useState(null); //clearTimeoutで処理を止める
+
+  const u = props.data.map(function(value) {
+    return value.id
+  })
+
+console.log(u)
 
   const changeTimerHour = (e) => {
     const value = e.target.value;
@@ -43,7 +50,7 @@ const CountUpTimer = () => {
   }
 
   const submitData = (t) => { // axiosでRailsにデータを送信
-    return axios.post("https://localhost3000/profiles",{
+    return axios.post(`http://localhost:3000/studies/${u}`,{
       study_time: t 
     }).then(res=>{
       return res.data
@@ -72,30 +79,38 @@ const CountUpTimer = () => {
   const hour = Math.floor(left / (60 * 60))
   const minute = Math.floor((left - hour * (60 * 60)) / 60 )
   const second = Math.floor(left - hour * (60 * 60) - minute * 60);
-
   
   return(
     <Fragment>
-      <div class="front">
-        <p>{zeropadding(hour)}:{zeropadding(minute)}:{zeropadding(second)}</p>
+      <div class="timer-wrapper">
+        <div class="front">
+          <p>{zeropadding(hour)}:{zeropadding(minute)}:{zeropadding(second)}</p>
+        </div>
+        <div class="input-wrapper">
+          <input type="text" onChange={changeTimerHour} placeholder="時間数を入力"></input>
+          <input type="text" onChange={changeTimerMinute} placeholder="分数を入力"></input>
+        </div>
+        <div class="btn-wrapper">
+          <button onClick={() => {
+            setChanging(!changing)
+          }}>
+            時間を設定
+          </button>
+          <button onClick={() => {
+            setCounting(!counting);
+            if (counting) {
+              clearTimeout(switching);
+              setSwitching(null);
+              const totalStudy = time.total - left
+              console.log(totalStudy);
+              submitData(totalStudy);
+            }
+          }}>
+            {counting ? "勉強中断" : "勉強開始"}
+          </button>
+        </div>
       </div>
-      <input type="text" value={time.hour} onChange={changeTimerHour}></input>
-      <input type="text" value={time.minute} onChange={changeTimerMinute}></input>
-      <button onClick={() => {
-        setChanging(!changing)
-      }}>時間を設定</button>
-      <button onClick={() => {
-        setCounting(!counting);
-
-        if (counting) {
-          clearTimeout(switching);
-          setSwitching(null);
-          const totalStudy = time.total - left
-          console.log(totalStudy);
-          submitData(totalStudy);
-        }
-      }}>{counting ? "勉強中断" : "勉強開始"}</button>
-      {/* <button onClick={}>勉強を終了する</button> */}
+      
   </Fragment>
   )
 }

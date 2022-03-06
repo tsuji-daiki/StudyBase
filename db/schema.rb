@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_15_021132) do
+ActiveRecord::Schema.define(version: 2022_03_01_042256) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -77,11 +77,13 @@ ActiveRecord::Schema.define(version: 2022_02_15_021132) do
 
   create_table "studies", force: :cascade do |t|
     t.integer "study_time"
-    t.integer "study_date"
+    t.string "study_date"
     t.integer "total_time"
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "profile_id"
+    t.index ["profile_id"], name: "index_studies_on_profile_id"
     t.index ["user_id"], name: "index_studies_on_user_id"
   end
 
@@ -105,5 +107,6 @@ ActiveRecord::Schema.define(version: 2022_02_15_021132) do
   add_foreign_key "posts", "users"
   add_foreign_key "profiles", "studies"
   add_foreign_key "profiles", "users"
+  add_foreign_key "studies", "profiles"
   add_foreign_key "studies", "users"
 end

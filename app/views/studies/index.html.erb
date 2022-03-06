@@ -1,0 +1,8 @@
+<%= react_component("timer",data: [{id: @user.id}]) %> <%# Reactコンポーネントの読み込み%>
+<% if @study.present? %>
+  <%= @study.study_time %>
+  <%= @study.study_date %>
+<% end %>
+<div class="return-top">
+  <%= link_to 'トップページに戻る',"/posts" %>
+</div>
