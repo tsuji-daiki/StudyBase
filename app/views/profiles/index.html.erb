@@ -1,7 +1,9 @@
 <h1>プロフィール画面</h1>
-<% if @study.present? %>
-  <%= column_chart Study.group(:study_date).sum(:study_time) %>
-  <p>現在までの学習時間<%= @study.study_time %></p>
-  <p>日時<%= @study.study_date %></p>
+<% if @study.exists? %>
+  <% @study.each do |study| %>
+    <%= column_chart Study.group(:study_date).sum(:study_time) %>
+    <p>現在までの学習時間<%= study.study_time %></p>
+    <p>日時<%= study.study_date %></p>
+  <% end %>
 <% end %>
 <%= link_to 'トップページへ','/posts' %>

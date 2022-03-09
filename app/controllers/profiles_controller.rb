@@ -3,8 +3,7 @@ class ProfilesController < ApplicationController
 
   def index
     @profile = Profile.find(params[:id])
-    @study = @profile.study
-    binding.pry
+    @study = @profile.user.studies
   end
 
   def edit
