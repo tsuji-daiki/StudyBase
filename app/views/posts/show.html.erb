@@ -12,6 +12,10 @@
         <div class="image-wrapper">
           <%= image_tag @user.profile.image.variant(resize:'100x100').processed %>
         </div>
+      <% else %>
+        <div class="image-wrapper">
+          <i class="fa fa-user"></i>
+        </div>
       <% end %>
       <div>
         ログイン中のメールアドレス：<%= @user.email %>
@@ -55,12 +59,16 @@
     <h1 class="show-title">投稿</h1>
     <div class="show-wrapper">
       <div class="profile-show-wrapper">
-        <% if @post.profile.image.attached? %>
-          <%= image_tag @post.profile.image.variant(resize:'80x40'), class:'profile-show-image' %>
+        <% if @post.user.profile.image.attached? %>
+          <%= image_tag @post.user.profile.image.variant(resize:'80x40'), class:'profile-show-image' %>
+        <% else %>
+          <div class="image-profile-wrapper">
+            <i class="fa fa-user"></i>
+          </div>
         <% end %>
         <div class="profile-show-name">
-          <%= @post.profile.name %>
-          <%= @post.profile.user_id %>
+          <%= @post.user.profile.name %>
+          <%= @post.user.profile.user_id %>
         </div>
       </div>
       <div class="content-show-wrapper">

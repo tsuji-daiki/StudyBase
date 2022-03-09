@@ -4,7 +4,7 @@ class StudiesController < ApplicationController
 
   def index
     @user = current_user
-    @study = @user.study
+    @user_study = @user.studies
   end
 
   def create
@@ -25,15 +25,13 @@ class StudiesController < ApplicationController
     @date = Date.today
     @study_date = @date.strftime("%Y/%m/%d")
     if Study.where(user_id: user.id, study_date: @study_date).exists?
-      @study = user.study
+      @study = user.studies.find_by(user_id: user.id)
       @study.attributes = {
         study_time: @study.study_time + params[:study_time]
       }
     else
-      @study = user.build_study(
+      @study = user.studies.build(
         study_time: params[:study_time],
-        profile_id: params[:id],
-        user_id: user.id,
         study_date: @study_date
         # total_time: params[:study_time]
       )

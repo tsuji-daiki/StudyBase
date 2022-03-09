@@ -65,15 +65,15 @@
         <% @post.each do |post|%>
           <div class="content-wrapper">
             <div class="profile-wrapper">
-              <% if post.profile.image.attached? %>
-                <%= image_tag post.profile.image.variant(resize:'60x60'), class:'profile-image' %>
+              <% if post.user.profile.image.attached? %>
+                <%= image_tag post.user.profile.image.variant(resize:'60x60'), class:'profile-image' %>
               <% else %>
                 <div class="image-profile-wrapper">
                   <i class="fa fa-user"></i>
                 </div>
               <% end %>
               <div class="profile-name">
-                <%= post.profile.name %>
+                <%= post.user.profile.name %>
               </div>
             </div>
             <div class="content-text-wrapper">
