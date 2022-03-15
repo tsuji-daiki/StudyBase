@@ -4,56 +4,68 @@
       <img src="" alt=""> <%# ロゴ %>
       <p>StudyBase</p>
     </div>
-    <% if user_signed_in? %>
-      <div>
-        ログイン中のユーザー：<%= link_to(@user.profile.name,"") %>
-      </div>
-      <% if @user.profile.image.attached? %>
-        <div class="image-wrapper">
-          <%= image_tag @user.profile.image.variant(resize:'100x100').processed %>
+    <div class="profile-common-wrapper">
+      <% if user_signed_in? %>
+        <% if @user.profile.image.attached? %>
+          <div class="image-wrapper">
+            <%= image_tag @user.profile.image.variant(resize:'100x100').processed, class: 'profile-image' %>
+          </div>
+        <% else %>
+          <div class="image-wrapper">
+            <i class="fa fa-user"></i>
+          </div>
+        <% end %>
+        <div class="profile-setting">
+          <div>
+            ユーザー名：<%= link_to(@user.profile.name,"") %>
+          </div>
+          <%= link_to 'プロフィールを編集', edit_profile_path(@user.id) %>
+          <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
         </div>
+        <ul class="menu-list">
+          <li class="common-menu">
+            <i class="fa fa-caret-right list-icon"></i>
+            <%= link_to 'トップ画面へ',"/posts", {class: "block"} %>
+          </li>
+          <li class="common-menu">
+            <i class="fa fa-caret-right list-icon"></i>
+            <%= link_to '勉強する',"/studies/#{@user.id}", {class: "block"} %>
+          </li>
+          <li class="common-menu">
+            <i class="fa fa-caret-right list-icon"></i>
+            <%= link_to 'プロフィール画面へ', "/profiles/#{@user.profile.id}", {class: 'block', id: @user.profile.id} %>
+          </li>
+          <li class="common-menu">
+            <i class="fa fa-caret-right list-icon"></i>
+            <%= link_to '投稿する',"/posts/new", {class: "block"} %>
+          </li>
+        </ul>
       <% else %>
-        <div class="image-wrapper">
-          <i class="fa fa-user"></i>
+        <div class="guest">
+          <div class="image-wrapper">
+            <i class="fa fa-user"></i>
+          </div>
+          <p>現在ログインしていません</p>
+          <div class="btn-padding login">
+            <%= link_to 'ログイン', new_user_session_path , {class: "btn"} %>
+          </div>
+          <div class="btn-padding registration">
+            <%= link_to '新規登録はこちら', new_user_registration_path, {class: "regist"} %>
+          </div>
         </div>
+        <ul class="menu-list">
+          <li class="common-menu">
+            <%= link_to '勉強する', "/studies", {class: "block"} %>
+          </li>
+          <li class="common-menu">
+            <%= link_to 'プロフィール', "/profiles", {class: "block"} %>
+          </li>
+          <li class="common-menu">
+            <%= link_to '投稿する',"/posts/new", {class: "block"} %>
+          </li>
+        </ul>
       <% end %>
-      <div>
-        ログイン中のメールアドレス：<%= @user.email %>
-      </div>
-      <%= link_to 'プロフィールを編集', edit_profile_path(@user.id) %>
-      <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
-      <ul class="menu-list">
-        <li class="common-menu">
-          <%= link_to '勉強する',"/studies/#{@user.id}", {class: "block"} %>
-        </li>
-        <li class="common-menu">
-          <%= link_to 'プロフィール画面へ', "/profiles/index", {class: 'block', id: @user.profile.id} %>
-        </li>
-      </ul>
-    <% else %>
-      <div class="guest">
-        <p>現在ログインしていません</p>
-        <div class="btn-padding login">
-          <%= link_to 'ログイン', new_user_session_path , {class: "btn"} %>
-        </div>
-        <div class="btn-padding registration">
-          <%= link_to '新規登録はこちら', new_user_registration_path, {class: "regist"} %>
-        </div>
-      </div>
-      <ul class="menu-list">
-        <li class="common-menu">
-          <%= link_to '勉強する', "/studies", {class: "block"} %>
-        </li>
-        <li class="common-menu">
-          <%= link_to 'プロフィール', "/profiles", {class: "block"} %>
-        </li>
-      </ul>
-    <% end %>
-    <ul class="menu-list">
-      <li class="common-menu2">
-        <%= link_to '投稿する',"/posts/new", {class: "block"} %>
-      </li>
-    </ul>
+    </div>
   </div>
   <div class="show">
     <h1 class="show-title">投稿</h1>
@@ -73,7 +85,9 @@
       </div>
       <div class="content-show-wrapper">
         <p class="content-show-text"><%= @post.content %></p>
-        <%= link_to image_tag("remove_content.png",class:"remove-image"), "/posts/#{@post.id}", method: :delete, data: {confirm: '削除しますか？'} %>
+        <% if @post.user_id === @user.id %>
+          <%= link_to image_tag("remove_content.png",class:"remove-image"), "/posts/#{@post.id}", method: :delete, data: {confirm: '削除しますか？'} %>
+        <% end %>
       </div>
     </div>
     <div class="return-top">
