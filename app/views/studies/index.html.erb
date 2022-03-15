@@ -1,11 +1,9 @@
 <%= react_component("timer",data: [{id: @user.id}]) %> 
 <%# Reactコンポーネントの読み込み%>
 
-<% if @user_study.exists? %>
-  <% @user_study.each do |study| %>
-    <%= study.study_time %>
-    <%= study.study_date %>
-  <% end %>
+<% if @user_study.present? %>
+  <p>勉強時間:<%= @user_study.hour_time %>時間<%= @user_study.minute_time %>分</p>
+  <p>勉強した日付:<%= @user_study.study_date %></p>
 <% end %> 
 
 <div class="return-top">

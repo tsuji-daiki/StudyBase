@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   before_action :authenticate_user!, only: [:new,:create,:destroy]
   
   def index
-    @post = Post.all
+    @post = Post.all.page(params[:page]).per(5)
     if user_signed_in?
       @user_mail = current_user.email
     end
@@ -16,6 +16,7 @@ class PostsController < ApplicationController
 
   def new
     @post = Post.new
+    @user = current_user
   end
 
   def create

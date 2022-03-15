@@ -1,9 +1,82 @@
-<h1>プロフィール画面</h1>
-<% if @study.exists? %>
-  <% @study.each do |study| %>
-    <%= column_chart Study.group(:study_date).sum(:study_time) %>
-    <p>現在までの学習時間<%= study.study_time %></p>
-    <p>日時<%= study.study_date %></p>
-  <% end %>
-<% end %>
-<%= link_to 'トップページへ','/posts' %>
+<div class="top-wrapper">
+  <h1>プロフィール画面</h1>
+  <div class="menu-content">
+    <div class="logo-menu">
+      <img src="" alt=""> <%# ロゴ %>
+      <p>StudyBase</p>
+    </div>
+    <div class="profile-common-wrapper">
+      <% if user_signed_in? %>
+        <% if @profile.image.attached? %>
+          <div class="image-wrapper">
+            <%= image_tag @profile.image.variant(resize:'100x100').processed, class: 'profile-image' %>
+          </div>
+        <% else %>
+          <div class="image-wrapper">
+            <i class="fa fa-user"></i>
+          </div>
+        <% end %>
+        <div class="profile-setting">
+          <div>
+            ユーザー名：<%= link_to(@profile.name,"") %>
+          </div>
+          <%= link_to 'プロフィールを編集', edit_profile_path(@user.id) %>
+          <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
+        </div>
+        <ul class="menu-list">
+          <li class="common-menu">
+            <i class="fa fa-caret-right list-icon"></i>
+            <%= link_to 'トップ画面へ',"/posts", {class: "block"} %>
+          </li>
+          <li class="common-menu">
+            <i class="fa fa-caret-right list-icon"></i>
+            <%= link_to '勉強する',"/studies/#{@user.id}", {class: "block"} %>
+          </li>
+          <li class="common-menu">
+            <i class="fa fa-caret-right list-icon"></i>
+            <%= link_to 'プロフィール画面へ', "/profiles/#{@user.profile.id}", {class: 'block', id: @user.profile.id} %>
+          </li>
+          <li class="common-menu">
+            <i class="fa fa-caret-right list-icon"></i>
+            <%= link_to '投稿する',"/posts/new", {class: "block"} %>
+          </li>
+        </ul>
+      <% else %>
+        <div class="guest">
+          <div class="image-wrapper">
+            <i class="fa fa-user"></i>
+          </div>
+          <p>現在ログインしていません</p>
+          <div class="btn-padding login">
+            <%= link_to 'ログイン', new_user_session_path , {class: "btn"} %>
+          </div>
+          <div class="btn-padding registration">
+            <%= link_to '新規登録はこちら', new_user_registration_path, {class: "regist"} %>
+          </div>
+        </div>
+        <ul class="menu-list">
+          <li class="common-menu">
+            <%= link_to '勉強する', "/studies", {class: "block"} %>
+          </li>
+          <li class="common-menu">
+            <%= link_to 'プロフィール', "/profiles", {class: "block"} %>
+          </li>
+          <li class="common-menu">
+            <%= link_to '投稿する',"/posts/new", {class: "block"} %>
+          </li>
+        </ul>
+      <% end %>
+    </div>
+  </div>
+  <div class="profile-content">
+    <% if @study.present? %>
+      <div class="profile-graph">
+        <%= column_chart @study.group_by_day(:created_at, last: 7).sum(:minute_time), width:"70vw", height:"30vw", xtitle: "勉強した日付", ytitle: "勉強時間", suffix:"分" %>
+      </div>
+      <p>現在までの総学習時間</p>
+      <p>今日の学習時間<%= @user_study.hour_time %>時間<%= @user_study.minute_time%>分</p>
+      <p>日時<%= @user_study.study_date %></p>
+    <% end %>
+    <%= link_to 'トップページへ','/posts' %>
+  </div>
+</div>

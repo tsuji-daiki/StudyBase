@@ -13,7 +13,7 @@ html {
 }
 
 body{
-  background-color: aquamarine;
+  background-color: #F2F2F2;
 }
 
 a {
@@ -48,25 +48,42 @@ li {
 // トップ・投稿ページ
 
 .top-wrapper{
-  // display: flex;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
 
   .menu-content {
     width: 18%;
     height: 100vh;
     background-color: #fff;
     position: fixed;
-  
-    .logo-menu {
-      p {
-        font-size: 1.2rem;
+    
+    .profile-common-wrapper {
+      margin-top: 10%;
+
+      .logo-menu {
+        p {
+          font-size: 1.2rem;
+        }
       }
-    }
-  
-    .menu-list {
-      text-align: center;
-  
-      .common-menu2 {
-        border-bottom: 1px solid rgba(0,0,0,0.3);
+
+      .profile-setting {
+        text-align: center;
+        margin-bottom: 20%;
+      }
+    
+      .menu-list {
+        .common-menu {
+          text-align: left;
+          position: relative;
+          .list-icon {
+            font-size: 1.5rem;
+            position: absolute;
+            top: 50%;
+            left: 15%;
+            transform: translateY(-50%);
+          }
+        }
       }
     }
   }  
@@ -87,7 +104,7 @@ li {
     object-fit: cover;
   }
 
-  i {
+  .fa-user {
     font-size: 5.0rem;
     color: gray;
     position: absolute;
@@ -122,14 +139,14 @@ li {
 }
 
 .image-profile-wrapper{
-  width: 55px;
-  height: 55px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background-color: aquamarine;
   position: relative;
 
-  i {
-    font-size: 3.0rem;
+  .fa-user {
+    font-size: 2.6rem;
     color: #fff;
     position: absolute;
     top: 50%;
@@ -142,8 +159,6 @@ li {
   width: 82%;
   margin: 0 0 0 auto;
   overflow: hidden;
-  // background-color: #f5f5f5;
-  // background-color: aquamarine;
 
   .post-wrapper {
     width: 80%;
@@ -167,7 +182,7 @@ li {
   border-top: 1px solid rgba(0,0,0,0.3);
 
   &:last-child {
-    border-bottom: 1px solid rgba(0,0,0,0.3)
+    border-bottom: 1px solid rgba(0,0,0,0.3);
   }
 
   .profile-wrapper {
@@ -178,13 +193,13 @@ li {
 
     .profile-image {
       border-radius: 50%;
-      width: 55px;
-      height: 55px;
+      width: 48px;
+      height: 48px;
       object-fit: cover;
     }
 
     .profile-name {
-      font-size: 1.0rem;
+      font-size: 1.3rem;
       padding-left: 3%;
     }
   }
@@ -193,7 +208,7 @@ li {
     width: 60%;
 
     .content-text{
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       display: block;
       padding: 8% 0;
     }
@@ -201,18 +216,15 @@ li {
 }
 
 // 共通コンポーネント
-.common-menu {
-  border-top: 1px solid rgba(0,0,0,0.3);
-  font-size: 1.0rem;
-
-  &:last-child {
-    border-bottom: 1px solid rgba(0,0,0,0.3);
-  }
-}
-
 .block {
   display: block;
-  padding: 10% 0;
+  padding: 10% 0% 10% 23%;
+  font-size: 1.3rem;
+  transition: 0.4s;
+
+  &:hover {
+    background-color: #F2F2F2;
+  }
 }
 
 // --------------------------- 投稿詳細画面
@@ -304,6 +316,15 @@ li {
   }
 }
 
+// ---------------------------  新規投稿画面
+
+.post-new-content {
+  width: 82%;
+  margin: 0 0 0 auto;
+  overflow: hidden;
+}
+
+
 // --------------------------- タイマー画面
 
 .timer-wrapper {
@@ -345,6 +366,18 @@ li {
       background-color: aquamarine;
       border: none;
     }
+  }
+}
+
+// -------------------------- profile画面
+
+.profile-content {
+  width: 82%;
+  margin: 0 0 0 auto;
+  overflow: hidden;
+
+    #chart-1 {
+      margin: 5% auto 0;
   }
 }
 

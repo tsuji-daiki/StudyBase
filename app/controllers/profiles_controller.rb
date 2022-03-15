@@ -4,6 +4,8 @@ class ProfilesController < ApplicationController
   def index
     @profile = Profile.find(params[:id])
     @study = @profile.user.studies
+    @user = current_user
+    @user_study = @user.studies.where("created_at > ?",Time.now.beginning_of_day).first
   end
 
   def edit
