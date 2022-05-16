@@ -54,7 +54,6 @@ class StudiesController < ApplicationController
     if Study.where(user_id: user.id, study_date: @study_date).exists?
       @study = user.studies.find_by(user_id: user.id, study_date: @study_date)
       carry_study() #勉強時間の繰り上げ
-      binding.pry
       @study.attributes = {
         hour_time: @study.hour_time + @hour_time + @carry_hour_time ,
         minute_time: @study.minute_time + @minute_time + @carry_minute_time,
