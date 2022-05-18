@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'posts#index';
   resources :posts
   resources :profiles, only: [:edit, :create, :update, :delete]
   get 'profiles', to: 'profiles#index'
