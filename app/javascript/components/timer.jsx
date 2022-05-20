@@ -29,8 +29,6 @@ const CountUpTimer = (props) => {
     return value.id
   })
 
-console.log(u)
-
   const changeTimerHour = (e) => {
     const value = e.target.value;
     const replaced = value.replace(/^0+/,'') //valueの先頭0を正規表現で削除
@@ -50,7 +48,7 @@ console.log(u)
   }
 
   const submitData = (t) => { // axiosでRailsにデータを送信
-    return axios.post(`http://localhost:3000/studies/${u}`,{
+    return axios.post(`https://studybaseapl.herokuapp.com/studies/${u}`,{
       study_time: t 
     }).then(res=>{
       return res.data
@@ -102,7 +100,6 @@ console.log(u)
               clearTimeout(switching);
               setSwitching(null);
               const totalStudy = time.total - left
-              console.log(totalStudy);
               submitData(totalStudy);
             }
           }}>
